@@ -9,6 +9,7 @@ import {
   Input,
   Button,
 } from "reactstrap";
+import PrimaryButton from "../components/primaryButton";
 
 function Login() {
   const [user, setUser] = React.useState({});
@@ -53,14 +54,32 @@ function Login() {
                 value={user.password}
               />
             </FormGroup>
-            <Button color="primary" onClick={logIn}>
-              Login
-            </Button>{" "}
+            <Row>
+              <Col>
+                <Button color="primary" onClick={logIn}>
+                  Login
+                </Button>{" "}
+              </Col>
+              <Col>
+                <PrimaryButton
+                  to="/"
+                  background="#000"
+                  color="#fff"
+                  label="Create User"
+                />
+              </Col>
+            </Row>
           </Form>
         </Col>
       </Row>
     </Container>
   );
 }
+
+const anything = {
+  text: {
+    fontSize: 12,
+  },
+};
 
 export default Login;
