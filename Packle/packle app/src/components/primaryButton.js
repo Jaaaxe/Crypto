@@ -7,9 +7,6 @@ const PrimaryButton = (props) => {
     <Button
       style={{
         backgroundColor: props.background,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         lineHeight: "100%",
       }}
     >

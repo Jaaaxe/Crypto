@@ -76,10 +76,4 @@ function Login() {
   );
 }
 
-const anything = {
-  text: {
-    fontSize: 12,
-  },
-};
-
 export default Login;

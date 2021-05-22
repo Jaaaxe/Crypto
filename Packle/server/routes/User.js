@@ -4,6 +4,8 @@ const User = require("../models/User");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Op = require("sequelize").Op;
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
 
 router.post("/register", (req, res) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
@@ -46,7 +48,7 @@ router.post("/login", (req, res) => {
 
               res
                 .status(200)
-                .cookie("access_token", `Bearer ${token}`, {
+                .cookie("access_token", token, {
                   expires: new Date(Date.now() + 8 * 3600000),
                 })
                 .end();
@@ -61,5 +63,23 @@ router.post("/login", (req, res) => {
     }
   });
 });
+
+router.get('/get-user-details', (req,res) => {
+  const decoded = jwt.verify(req.cookies['access_token'], "root")
+  console.log(decoded);
+  User.findOne({
+    where: {
+      id: decoded.token
+    }
+  })
+  .then(user => {
+    if(user){
+      res.status(200).json({name: user.username}).end()
+    } else {
+      res.status(401).end()
+    }
+  })
+})
+
 
 module.exports = router;

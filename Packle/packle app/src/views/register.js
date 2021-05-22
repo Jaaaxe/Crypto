@@ -10,19 +10,15 @@ import {
   Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { registerAccount } from '../utils/userUtils';
 
 function Register() {
   const [user, setUser] = React.useState({});
   const submitInfo = () => {
-    console.log(user);
-    fetch("http://localhost:3001/user/register", {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "no-cors",
-      },
-    });
+    registerAccount(user)
+    .then(res => {
+        //TODO handle res
+    })
   };
 
   return (

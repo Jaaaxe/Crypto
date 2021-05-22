@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const users = require("./routes/User");
 const app = express();
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const whitelist = ["http://localhost:3000"];
 const corsOptions = {
   credentials: true, // This is important.
@@ -14,7 +15,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
