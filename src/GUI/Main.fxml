@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="571.0" prefWidth="877.0" stylesheets="@Resources/style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UIController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <children>
+            <TabPane layoutX="-3.0" layoutY="-1.0" prefHeight="573.0" prefWidth="918.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Credit Card Verification">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="334.0" prefWidth="640.0" style="-fx-background-color: #333946;">
+                           <children>
+                              <Text fill="#fefefe" layoutX="236.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please type in your credit card number and press verify">
+                                 <font>
+                                    <Font name="Avenir Book" size="18.0" />
+                                 </font></Text>
+                              <TextField fx:id="CreditCardVerify_CCNumber" alignment="CENTER" layoutX="286.0" layoutY="252.0" prefHeight="42.0" prefWidth="340.0" promptText="Card Number" style="-fx-font-color: #ffff; -fx-background-insets: 0; -fx-background-radius: 0;">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></TextField>
+                              <Button fx:id="CreditCardVerify_VerifyButton" layoutX="332.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#CreditCardVerify_VerifyOnClick" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Verify" textFill="#333946">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></Button>
+                              <ImageView fitHeight="52.0" fitWidth="250.0" layoutX="331.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Resources/cards.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="CreditCardVerify_Refresh" layoutX="465.0" layoutY="317.0" mnemonicParsing="false" onMouseClicked="#CreditCardVerify_Refresh" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: #333946; -fx-background-radius: 0; -fx-border-width: 2; -fx-border-color: #dfab40;" text="Refresh" textFill="#dfab40">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Hamming Code">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="910.0" style="-fx-background-color: #333946;">
+                           <children>
+                              <TextField fx:id="HammingCode_InputBinary" alignment="CENTER" layoutX="249.0" layoutY="224.0" prefHeight="40.0" prefWidth="307.0" promptText="Binary String" style="-fx-background-radius: 0;">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></TextField>
+                              <Button fx:id="HammingCode_FindErrorOnClick" layoutX="332.0" layoutY="289.0" mnemonicParsing="false" onMouseClicked="#HammingCode_FindErrorOnClick" prefHeight="36.0" prefWidth="122.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Evaluate">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></Button>
+                              <CheckBox fx:id="HammingCode_UseOddParity" layoutX="575.0" layoutY="234.0" mnemonicParsing="false" text="Odd parity" textFill="#dddddd">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></CheckBox>
+                              <Text fill="#fefefe" layoutX="215.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a 7 digit binary string to check if there's an error">
+                                 <font>
+                                    <Font name="Avenir Book" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Button fx:id="Hamming_Refresh" layoutX="465.0" layoutY="289.0" mnemonicParsing="false" onMouseClicked="#Hamming_Refresh" prefHeight="36.0" prefWidth="121.0" style="-fx-background-color: #333946; -fx-background-radius: 0; -fx-border-width: 2; -fx-border-color: #dfab40;" text="Refresh" textFill="#dfab40">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Password Attacks">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="CENTER" layoutX="14.0" layoutY="6.0" prefHeight="26.0" prefWidth="275.0" text="Server Output" textFill="#565656">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="PasswordAttacks_ServerOutput" layoutX="14.0" layoutY="32.0" prefHeight="470.0" prefWidth="275.0" promptText="Output from the server" />
+                              <Label alignment="CENTER" layoutX="292.0" layoutY="6.0" prefHeight="26.0" prefWidth="275.0" text="Client Output" textFill="#565656">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="PasswordAttacks_ClientOutput" layoutX="292.0" layoutY="32.0" prefHeight="470.0" prefWidth="275.0" promptText="Output from the client" />
+                              <Label layoutX="581.0" layoutY="6.0" prefHeight="26.0" prefWidth="344.0" text="Server Settings" textFill="#565656">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="581.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port Number" />
+                              <Text layoutX="581.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+                              <TextField fx:id="PasswordAttacks_ServerPassword" layoutX="682.0" layoutY="62.0" prefHeight="26.0" prefWidth="225.0" promptText="Enter the password of the server here" />
+                              <Label layoutX="582.0" layoutY="104.0" prefHeight="26.0" prefWidth="344.0" text="Client Settings" textFill="#565656">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="581.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server IP" />
+                              <TextField fx:id="PasswordAttacks_ClientTargetIP" layoutX="680.0" layoutY="131.0" prefHeight="26.0" prefWidth="226.0" promptText="Server port number" />
+                              <Text layoutX="581.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port Number" />
+                              <Label layoutX="583.0" layoutY="233.0" prefHeight="26.0" prefWidth="344.0" text="Brute Force Attack" textFill="#565656">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="583.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password Length" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceUppercase" layoutX="681.0" layoutY="288.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Uppercase" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceLowercase" layoutX="681.0" layoutY="307.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Lowercase" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceSpecialChars" layoutX="790.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Special Chars" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceNumbers" layoutX="790.0" layoutY="307.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Numbers" />
+                              <Label layoutX="581.0" layoutY="336.0" prefHeight="26.0" prefWidth="346.0" text="Dictionary Attack" textFill="#565656">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="582.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dictionary File" />
+                              <TextField fx:id="PasswordAttacks_DictionaryFile" layoutX="681.0" layoutY="363.0" prefHeight="26.0" prefWidth="199.0" promptText="Path to dictionary file" />
+                              <Button fx:id="PasswordAttacks_OpenDictionaryFileButton" layoutX="883.0" layoutY="363.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_DictionaryFileOpenClicked" prefHeight="26.0" prefWidth="26.0" text="..." />
+                              <Button fx:id="PasswordAttacks_AttackButton" layoutX="581.0" layoutY="475.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_StartAttack" prefHeight="26.0" prefWidth="336.0" text="Start Attack" />
+                              <Button fx:id="PasswordAttacks_ServerButton" layoutX="581.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_StartServer" prefHeight="26.0" prefWidth="336.0" text="Start Server" />
+                              <Text layoutX="581.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Attack Mode" />
+                              <ComboBox fx:id="PasswordAttacks_AttackMode" layoutX="680.0" layoutY="192.0" onKeyPressed="#PasswordAttacks_AttackModeChanged" prefHeight="26.0" prefWidth="225.0" />
+                              <TextField fx:id="PasswordAttacks_ServerPort" layoutX="682.0" layoutY="31.0" prefHeight="26.0" prefWidth="225.0" promptText="Server port number" />
+                              <TextField fx:id="PasswordAttacks_ClientTargePort" layoutX="681.0" layoutY="161.0" prefHeight="26.0" prefWidth="225.0" promptText="Enter the password of the server here" />
+                              <TextField fx:id="PasswordAttacks_BruteForcePasswordLengthPasswordAttacks_BruteForcePasswordLength" layoutX="680.0" layoutY="258.0" onInputMethodTextChanged="#PasswordAttacks_BruteForceConfigChange" prefHeight="26.0" prefWidth="225.0" promptText="Password length" />
+                              <ProgressIndicator fx:id="PasswordAttacks_Progress" layoutX="680.0" layoutY="397.0" prefHeight="80.0" prefWidth="68.0" progress="0.0" />
+                              <Text layoutX="583.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Stream Cipher + Steganography">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #333946;">
+                           <children>
+                              <Label alignment="CENTER" layoutX="53.0" layoutY="105.0" prefHeight="26.0" prefWidth="242.0" text="Normal Message" textFill="#fefefe">
+                                 <font>
+                                    <Font name="Avenir Book" size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="TextStega_Original" layoutX="53.0" layoutY="142.0" prefHeight="134.0" prefWidth="250.0" style="-fx-background-radius: 0;" />
+                              <Label alignment="CENTER" layoutX="345.0" layoutY="105.0" prefHeight="26.0" prefWidth="249.0" text="Secret Message" textFill="#fefefe">
+                                 <font>
+                                    <Font name="Avenir Book" size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="TextStega_Secret" layoutX="345.0" layoutY="142.0" onKeyPressed="#typetest" prefHeight="135.0" prefWidth="249.0" style="-fx-background-radius: 0;" />
+                              <TextField fx:id="SteganographyCiperPassword" alignment="CENTER" layoutX="661.0" layoutY="282.0" prefHeight="37.0" prefWidth="213.0" promptText="Enter password" style="-fx-background-color: #e1bd75; -fx-background-radius: 0; -fx-border-color: #dfab40; -fx-border-width: 2; -fx-text-fill: #1d222c; -fx-prompt-text-fill: #333946;" text="wdwed">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></TextField>
+                              <CheckBox fx:id="TextStegaEnableEncryption" layoutX="662.0" layoutY="246.0" mnemonicParsing="false" selected="true" text="Enable Stream Cipher" textFill="#fefefe">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font></CheckBox>
+                              <TextArea fx:id="TextStega_Encoded" layoutX="50.0" layoutY="338.0" prefHeight="121.0" prefWidth="540.0" style="-fx-background-radius: 0;" />
+                              <Label alignment="CENTER" layoutX="50.0" layoutY="301.0" prefHeight="26.0" prefWidth="539.0" text="Encoded Message" textFill="#fefefe">
+                                 <font>
+                                    <Font name="Avenir Book" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="660.0" layoutY="144.0" mnemonicParsing="false" onMouseClicked="#TextStega_EncodeClicked" prefHeight="36.0" prefWidth="214.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Encode Message" textFill="#333946">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="661.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#TextStega_DecodeClicked" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Decode Message" textFill="#333946">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="656.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#TextStega_Refresh" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #333946; -fx-background-radius: 0; -fx-text-fill: #dfab40; -fx-border-color: #dfab40; -fx-border-width: 2;" text="Refresh" textFill="#333946">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Label alignment="CENTER" layoutX="54.0" layoutY="24.0" prefHeight="27.0" prefWidth="820.0" text="Encode messages by typing a normal message, secret message and setting a password. 1 char needs 8 spaces." textFill="#fefefe">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="53.0" layoutY="47.0" prefHeight="27.0" prefWidth="824.0" text="Decode messages by putting the message in encoded box, writing the password and clicking decode." textFill="#fefefe">
+                                 <font>
+                                    <Font name="Avenir Book" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="chars" alignment="CENTER_RIGHT" layoutX="494.0" layoutY="276.0" prefHeight="20.0" prefWidth="102.0" textFill="#dfab40">
+                                 <font>
+                                    <Font name="Avenir Book" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

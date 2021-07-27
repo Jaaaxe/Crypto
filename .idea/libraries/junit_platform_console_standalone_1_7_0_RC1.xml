@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="junit-platform-console-standalone-1.7.0-RC1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-console-standalone-1.7.0-RC1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.7.0-RC1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-engine-5.7.0-RC1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.13.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
