@@ -51,6 +51,7 @@ public class BruteForceAttack implements Attacker {
 
     private void AttackInstance(List<String> Chunk) {
         var index = 0;
+        long start = System.currentTimeMillis();
         while (!AttackHalted && !PasswordFound && index < Chunk.size()) {
 
             try {
@@ -60,20 +61,22 @@ public class BruteForceAttack implements Attacker {
                 var input_stream_reader = new BufferedReader(new InputStreamReader(input_stream));
                 var output_stream_writer = new PrintWriter(output_stream, true);
 
-//                System.out.println("[DICTIONARY] Connected...");
-//                ReadStream(input_stream);
                 input_stream_reader.readLine();
                 input_stream_reader.readLine();
 
-                System.out.println("[DICTIONARY] Trying " + Chunk.get(index));
+                System.out.println("[BRUTEFORCE] Trying " + Chunk.get(index));
+
                 output_stream_writer.println(Chunk.get(index) + '\n');
                 var password_repsonse = input_stream_reader.readLine();
 
 //                System.out.println("[DICTIONARY] >> Response : " + password_repsonse);
                 this.Progress = ((float)(index + 1) / (float)this.Dictionary.size());
                 if (password_repsonse.contains("Access Granted")) {
-                    Debug("Password found : " + Chunk.get(index) + "\n");
+                    Debug("Password found successfully!\nPassword: " + Chunk.get(index) + "\n");
+
                     System.out.println("Password Found! : " + Chunk.get(index));
+                    long time = (System.currentTimeMillis() - start)/1000;
+                    System.out.println("Time was: "+time+"s");
                     this.MatchedPassword = Chunk.get(index);
                     this.PasswordFound = true;
                     this.AttackHalted = true;
@@ -83,7 +86,7 @@ public class BruteForceAttack implements Attacker {
                     att_res.Attempts = index + 1;
                     att_res.AttackSuccessful = true;
                     att_res.CrackedPassword = Chunk.get(index);
-                    att_res.Duration = -1;
+                    att_res.Duration = time;
 
                     NotifyResult(att_res);
                     return;

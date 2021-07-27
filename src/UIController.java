@@ -1,9 +1,5 @@
 import Cryptography.PasswordAttacks.*;
-import Cryptography.Steganograpgy.TextStega;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +11,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 public class UIController implements Initializable, DebugListener, AttackResultListener {
@@ -89,7 +84,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
     Cryptography.PasswordAttacks.Server PasswordAttacks_Server;
 
     @FXML
-    private ProgressIndicator PasswordAttacks_Progress;
+    private ProgressBar Traversed;
     @FXML
     private TextArea PasswordAttacks_ServerOutput;
     @FXML
@@ -121,7 +116,8 @@ public class UIController implements Initializable, DebugListener, AttackResultL
     @FXML
     private TextField PasswordAttacks_ClientTargetPort;
     @FXML
-    private TextField PasswordAttacks_BruteForcePasswordLengthPasswordAttacks_BruteForcePasswordLength;
+    private Slider PasswordAttacks_BruteForcePasswordLength;
+
     @FXML
     void PasswordAttacks_AttackModeChanged(KeyEvent event) {
 
@@ -142,8 +138,9 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @FXML
     void PasswordAttacks_BruteForceConfigChange(InputMethodEvent event) {
+        int passlen = (int) PasswordAttacks_BruteForcePasswordLength.getValue();
         PasswordAttacks_BruteForceAttack.ConfigureAttack(
-                Integer.parseInt(PasswordAttacks_BruteForcePasswordLengthPasswordAttacks_BruteForcePasswordLength.getText()),
+                passlen,
                 PasswordAttacks_BruteForceUppercase.isSelected(),
                 PasswordAttacks_BruteForceLowercase.isSelected(),
                 PasswordAttacks_BruteForceSpecialChars.isSelected(),
@@ -154,8 +151,9 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @FXML
     void PasswordAttacks_BruteForceConfigChangeIncl(MouseEvent event) {
+        int passlen = (int) PasswordAttacks_BruteForcePasswordLength.getValue();
         PasswordAttacks_BruteForceAttack.ConfigureAttack(
-                Integer.parseInt(PasswordAttacks_BruteForcePasswordLengthPasswordAttacks_BruteForcePasswordLength.getText()),
+                passlen,
                 PasswordAttacks_BruteForceUppercase.isSelected(),
                 PasswordAttacks_BruteForceLowercase.isSelected(),
                 PasswordAttacks_BruteForceSpecialChars.isSelected(),
@@ -164,14 +162,14 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     }
 
-
     @FXML
     void PasswordAttacks_StartAttack(MouseEvent event) {
+        Traversed.setVisible(true);
         PasswordAttacks_AttackMode.setDisable(true);
         PasswordAttacks_AttackButton.setText("Stop Attack");
         var attack = PasswordAttacks_AttackMode.getSelectionModel().selectedItemProperty().getValue();
-        attack.SetTargetPort(5002);
-        attack.SetTargetIP("127.0.0.1");
+        attack.SetTargetPort(Integer.parseInt(PasswordAttacks_ServerPort.getText()));
+        attack.SetTargetIP(PasswordAttacks_ClientTargetIP.getText());
         attack.StartAttack();
         new Thread(new Runnable() {
             @Override
@@ -179,6 +177,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
                 SyncProgress();
             }
         }).start();
+
     }
 
     @FXML
@@ -225,30 +224,30 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @Override
     public void AttackCompleted(Attacker a, AttackResult r) {
+        System.out.println("Start of attack completed");
         PasswordAttacks_AttackMode.setDisable(true);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                System.out.println("inside ovveride");
                 PasswordAttacks_AttackButton.setText("Start Attack");
+
+                PasswordAttacks_ClientOutput.setText(
+                        PasswordAttacks_ClientOutput.getText() + ("Time elapsed: "+Long.toString(r.Duration)+"s")
+                );
+                Traversed.setVisible(false);
+
             }
         });
-
-        var message = "";
-        if (r.AttackSuccessful) {
-            message = "Password cracking successful! Password : " + r.CrackedPassword + "\nAttempts : " + r.Attempts;
-        } else {
-            message = "Password cracking failed.\nAttempts : " + r.Attempts;
-        }
-        ShowMessageAlert("Password Cracking","Hackerman","INFORMATION");
     }
 
     private void SyncProgress() {
         try {
-            PasswordAttacks_Progress.setProgress(0);
+            Traversed.setProgress(0);
             var attack = PasswordAttacks_AttackMode.getSelectionModel().selectedItemProperty().getValue();
             System.out.println(attack.IsAttackRunning());
             while (attack.IsAttackRunning()) {
-                PasswordAttacks_Progress.setProgress(attack.GetProgress());
+                Traversed.setProgress(attack.GetProgress());
                 Thread.sleep(100);
             }
         } catch (Exception e) {
@@ -260,53 +259,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
     public void ProgressChange(int current_taskIndex, int total_tasks) {
         // Yeah, we are not going to use this...
     }
-    //endregion
-    //region Stream Cipher
-    @FXML
-    private TextArea StreamCipher_HexOut;
-    @FXML
-    private TextArea StreamCipher_PlainTextIn;
-    @FXML
-    private TextField StreamCipher_PasswordField;
-    @FXML
-    private Button StreamCipher_RunProcessButton;
-    @FXML
-    private Button StreamCipher_ConvertHexToPlainButton;
-    @FXML
-    private Button StreamCipher_ConvertPlainToHexButton;
-    @FXML
-    void StreamCipher_HexToPlainClicked(MouseEvent event) {
-        StreamCipher_PlainTextIn.setText(
-                DotNetExtensions.FormatConversions.ConvertHexToPlain(
-                        StreamCipher_HexOut.getText()
-                )
-        );
-    }
 
-    @FXML
-    void StreamCipher_PlainToHexClicked(MouseEvent event) {
-        StreamCipher_HexOut.setText(
-                DotNetExtensions.FormatConversions.ConvertPlainToHex(
-                        StreamCipher_PlainTextIn.getText()
-                )
-        );
-    }
-
-    @FXML
-    void StreamCipher_RunProcess(MouseEvent event) {
-        StreamCipher_HexOut.setText(
-            new String(
-                org.apache.commons.codec.binary.Hex.encodeHex(
-                    Cryptography.StreamCipher.StreamCipherHandler.Encode(
-                            DotNetExtensions.FormatConversions.ConvertHexToBytes(
-                                StreamCipher_HexOut.getText()
-                        ),
-                        StreamCipher_PasswordField.getText().getBytes(StandardCharsets.UTF_8)
-                    )
-                )
-            )
-        );
-    }
 
     ///////////////////////////////////
     // Steganography + Stream Cipher //
@@ -327,19 +280,23 @@ public class UIController implements Initializable, DebugListener, AttackResultL
     private CheckBox TextStegaEnableEncryption;
 
     @FXML
+    private Label chars;
+
+
+    @FXML
     void TextStega_DecodeClicked(MouseEvent event) {
 
         try {
             if (TextStegaEnableEncryption.isSelected()) {
                 TextStega_Secret.setText(
-                        Cryptography.Steganograpgy.TextStega.Decode(
+                        Cryptography.Steganography.TextStega.Decode(
                                 TextStega_Encoded.getText(),
                                 SteganographyCiperPassword.getText()
                         )
                 );
             } else {
                 TextStega_Secret.setText(
-                        Cryptography.Steganograpgy.TextStega.Decode(TextStega_Encoded.getText())
+                        Cryptography.Steganography.TextStega.Decode(TextStega_Encoded.getText())
                 );
             }
         } catch (Exception e) {
@@ -350,8 +307,8 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @FXML
     void TextStega_EncodeClicked(MouseEvent event) {
-        var max_char_count = Cryptography.Steganograpgy.TextStega.CountPossibleCharacters(TextStega_Original.getText());
-        if (!Cryptography.Steganograpgy.TextStega.CheckIfEncodeable(
+        var max_char_count = Cryptography.Steganography.TextStega.CountPossibleCharacters(TextStega_Original.getText());
+        if (!Cryptography.Steganography.TextStega.CheckIfEncodeable(
                 TextStega_Original.getText(),
                 TextStega_Secret.getText()
         )){
@@ -361,7 +318,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
         try {
             if (TextStegaEnableEncryption.isSelected()) {
                 TextStega_Encoded.setText(
-                        Cryptography.Steganograpgy.TextStega.Encode(
+                        Cryptography.Steganography.TextStega.Encode(
                                 TextStega_Original.getText(),
                                 TextStega_Secret.getText(),
                                 SteganographyCiperPassword.getText()
@@ -369,7 +326,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
             } else {
                 TextStega_Encoded.setText(
-                        Cryptography.Steganograpgy.TextStega.Encode(
+                        Cryptography.Steganography.TextStega.Encode(
                                 TextStega_Original.getText(),
                                 TextStega_Secret.getText()
                         ));
@@ -378,10 +335,21 @@ public class UIController implements Initializable, DebugListener, AttackResultL
             TextStega_Original.setText("");
             TextStega_Secret.setText("");
             SteganographyCiperPassword.setText("");
+            chars.setVisible(false);
         } catch (Exception e) {
             System.out.println("Oh noes");
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void CharCount(KeyEvent event) {
+        chars.setVisible(true);
+        int val = 0;
+        val = Cryptography.Steganography.TextStega.CountPossibleCharacters(TextStega_Original.getText())-1;
+        chars.textProperty().bind(TextStega_Secret.textProperty()
+                    .length()
+                    .asString("Char: %d / "+Integer.toString(val)));
     }
 
     @FXML
@@ -390,24 +358,24 @@ public class UIController implements Initializable, DebugListener, AttackResultL
         TextStega_Encoded.setText("");
         TextStega_Secret.setText("");
         SteganographyCiperPassword.setText("");
+        chars.setVisible(false);
+
     }
-    @FXML Label chars;
-    @FXML
-    void typetest(KeyEvent event) {
-        chars.textProperty().bind(TextStega_Secret.textProperty()
-                .length()
-                .asString("Char: %d / "+Integer.toString(Cryptography.Steganograpgy.TextStega.CountPossibleCharacters(TextStega_Original.getText()))));
-    }
+
 
     /////////////
     // General //
     /////////////
     @FXML
     private void ShowMessageAlert(String message, String title, String type) {
-        Alert alert = new Alert(Alert.AlertType.valueOf(type), message);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.showAndWait();
+       try {
+           Alert alert = new Alert(Alert.AlertType.valueOf(type), message);
+           alert.setTitle(title);
+           alert.setHeaderText(null);
+           alert.showAndWait();
+       } catch (Exception e){
+           System.out.println("Java doesn't like threads");
+       }
     }
 
 
@@ -421,6 +389,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
 
         PasswordAttacks_AttackMode.setItems(Modes);
+        PasswordAttacks_AttackMode.getSelectionModel().selectFirst();
         PasswordAttacks_DictionaryAttack.SubscribeToDebug(this);
         PasswordAttacks_BruteForceAttack.SubscribeToDebug(this);
         PasswordAttacks_DictionaryAttack.SubscribeToCompletion(this);
@@ -429,8 +398,13 @@ public class UIController implements Initializable, DebugListener, AttackResultL
         TextStega_Encoded.setWrapText(true);
         TextStega_Secret.setWrapText(true);
         SteganographyCiperPassword.visibleProperty().bind(TextStegaEnableEncryption.selectedProperty());
+        Traversed.setVisible(false);
 
         System.out.println("App Loaded");
+
+
+
+
 
 
     }

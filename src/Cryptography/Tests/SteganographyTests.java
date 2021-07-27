@@ -15,24 +15,24 @@ public class SteganographyTests {
     @Test
     @DisplayName("Read Test")
     public void ReadTest() throws UnsupportedEncodingException {
-        Assert.assertEquals("TEST", Cryptography.Steganograpgy.TextStega.Decode(EncodedMessage));
+        Assert.assertEquals("TEST", Cryptography.Steganography.TextStega.Decode(EncodedMessage));
     }
 
     @Test
     @DisplayName("Write Test")
     public void WriteTest() throws UnsupportedEncodingException {
-        Assert.assertEquals(EncodedMessage, Cryptography.Steganograpgy.TextStega.Encode(PlainMessage, "TEST"));
+        Assert.assertEquals(EncodedMessage, Cryptography.Steganography.TextStega.Encode(PlainMessage, "TEST"));
     }
 
 //    @Test
 //    @DisplayName("Read Test \\w Password")
 //    public void ReadTestPassword() throws UnsupportedEncodingException {
-//        Assert.assertEquals("TEST", Cryptography.Steganograpgy.TextStega.Decode(EncodedMessage, "Password"));
+//        Assert.assertEquals("TEST", Cryptography.Steganography.TextStega.Decode(EncodedMessage, "Password"));
 //    }
 //
 //    @Test
 //    @DisplayName("Write Test \\w Password")
 //    public void WriteTestPassword() throws UnsupportedEncodingException {
-//        Assert.assertEquals(EncodedMessage, Cryptography.Steganograpgy.TextStega.Encode(PlainMessage, "TEST", "Password"));
+//        Assert.assertEquals(EncodedMessage, Cryptography.Steganography.TextStega.Encode(PlainMessage, "TEST", "Password"));
 //    }
 }

@@ -33,8 +33,51 @@
 .tab-pane > .tab-header-area > .headers-region > .tab:selected >.tab-container >.focus-indicator {
   -fx-opacity: 0;
 }
- .dialog-pane{
-  -fx-border-color:red;
-  -fx-border-width:5.0px;
- }
 
+.slider .axis .axis-tick-mark {
+    -fx-fill: null;
+    -fx-stroke: goldenrod;
+}
+
+.slider .axis { 
+  -fx-tick-label-fill: goldenrod; 
+  -fx-tick-label-font: 13px "Avenir Book";
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #333946;
+    -fx-padding: 5 0 2 7;
+    -fx-text-fill: #dfab40;
+    -fx-cell-size: 2.5em; 
+}
+
+.combo-box-base  
+{
+    -fx-background-color: #333946;
+    -fx-background-radius: 0;
+    -fx-padding: 5;
+    -fx-border-width: 2;
+    -fx-border-color:#dfab40;
+
+}
+
+.combo-box .arrow{
+    -fx-background-color: #dfab40;
+}
+
+.progress-bar > .track {
+  -fx-text-box-border: #333946;
+  -fx-control-inner-background: #333948;
+  -fx-background-insets: 0;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: linear-gradient(
+        from 0px .75em to .75em 0px,
+        repeat,
+        goldenrod 0%,
+        goldenrod 49%,
+        derive(goldenrod, 30%) 50%,
+        derive(goldenrod, 30%) 99%
+    );
+}

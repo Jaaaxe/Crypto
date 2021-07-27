@@ -1,10 +1,8 @@
-package Cryptography.Steganograpgy;
+package Cryptography.Steganography;
 
 import Cryptography.StreamCipher.StreamCipherHandler;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Convert;
 
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class TextStega {
@@ -124,7 +122,7 @@ public class TextStega {
             }
         }
 
-        return (int)(count / 8)-1;
+        return (int)(count / 8);
     }
 
     public static boolean CheckIfEncodeable(String medium_message, String secret) {
