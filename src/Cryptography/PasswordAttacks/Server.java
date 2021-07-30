@@ -3,7 +3,6 @@ package Cryptography.PasswordAttacks;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -17,13 +16,16 @@ public class Server {
 
     public boolean ServerRunning;
 
+    // Function names are self explanatory on what each function does
+    // in terms of the server
+
     public Server(int port, String Password) {
         try {
             this.Port = port;
             SSocket = new ServerSocket(port);
             this.Password = Password;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Server error");
 
         }
     }
@@ -43,22 +45,21 @@ public class Server {
             this.Halted = true;
             this.ServerRunning = false;
         } catch (IOException e) {
-
+            System.out.println("Server stop error");
         }
     }
-
 
     private void AcceptNewConnections() {
         try {
             while (!Halted) {
                 var nsocket = SSocket.accept();
-//                System.out.println("[SERVER] New Connection...");
+
                 CompletableFuture.runAsync(() -> {
                    HandleClient(nsocket);
                 });
             }
         } catch (Exception e) {
-            Debug("New Connection Handler Loop Broken\n");
+            Debug("Server Stopped\n");
             ServerRunning = false;
             return;
         }
@@ -71,10 +72,8 @@ public class Server {
             var input_stream_reader = new BufferedReader(new InputStreamReader(input_stream));
             var output_stream_writer = new PrintWriter(output_stream, true);
 
-            WriteStream(output_stream,"Welcome to the secret server\nPlease provide password to access secret files\nPassword : ");
+            WriteStream(output_stream,"Hello! Welcome to the secret server\nPlease provide password to access secret files\nPassword : ");
             var response = input_stream_reader.readLine();
-
-//            System.out.println("[SERVER] Incoming Password : " + response);
 
             if (!response.equals(this.Password)) {
                 output_stream_writer.println("Access Denied");
@@ -85,7 +84,6 @@ public class Server {
 
         } catch (IOException e) {
             ServerRunning = false;
-            e.printStackTrace();
         }
     }
 

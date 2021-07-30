@@ -1,7 +1,10 @@
 import Cryptography.PasswordAttacks.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -9,7 +12,6 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -115,11 +117,42 @@ public class UIController implements Initializable, DebugListener, AttackResultL
     private TextField PasswordAttacks_ServerPort;
     @FXML
     private TextField PasswordAttacks_ClientTargetPort;
+
     @FXML
     private Slider PasswordAttacks_BruteForcePasswordLength;
 
     @FXML
-    void PasswordAttacks_AttackModeChanged(KeyEvent event) {
+    private Label PasswordLength;
+
+    @FXML
+    private Label AttackTitle;
+
+    @FXML
+    private void PasswordAttacks_AttackModeChanged(ActionEvent event) {
+
+        Attacker type = PasswordAttacks_AttackMode.getValue();
+
+        if(type.toString().equals("Bruteforce Attack")){
+            AttackTitle.setText("Bruteforce Setup");
+            PasswordLength.setVisible(true);
+            PasswordAttacks_BruteForcePasswordLength.setVisible(true);
+            PasswordAttacks_BruteForceUppercase.setVisible(true);
+            PasswordAttacks_BruteForceSpecialChars.setVisible(true);
+            PasswordAttacks_BruteForceLowercase.setVisible(true);
+            PasswordAttacks_BruteForceNumbers.setVisible(true);
+            PasswordAttacks_DictionaryFile.setVisible(false);
+            PasswordAttacks_OpenDictionaryFileButton.setVisible(false);
+        } else if(type.toString().equals("Dictionary Attack")){
+            AttackTitle.setText("Dictionary Setup");
+            PasswordLength.setVisible(false);
+            PasswordAttacks_BruteForcePasswordLength.setVisible(false);
+            PasswordAttacks_BruteForceUppercase.setVisible(false);
+            PasswordAttacks_BruteForceSpecialChars.setVisible(false);
+            PasswordAttacks_BruteForceLowercase.setVisible(false);
+            PasswordAttacks_BruteForceNumbers.setVisible(false);
+            PasswordAttacks_DictionaryFile.setVisible(true);
+            PasswordAttacks_OpenDictionaryFileButton.setVisible(true);
+        }
 
     }
 
@@ -128,7 +161,9 @@ public class UIController implements Initializable, DebugListener, AttackResultL
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Open Dictionary File");
         var file = chooser.showOpenDialog(PasswordAttacks_DictionaryFile.getScene().getWindow());
+        System.out.println(file);
         if (file != null) {
+            PasswordAttacks_DictionaryFile.setText(file.toString());
             this.PasswordAttacks_DictionaryAttack.ClearDictionary();
             this.PasswordAttacks_DictionaryAttack.AddDictionaryFile(file);
         }
@@ -164,19 +199,26 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @FXML
     void PasswordAttacks_StartAttack(MouseEvent event) {
+
+        PasswordAttacks_ClientOutput.clear();
         Traversed.setVisible(true);
-        PasswordAttacks_AttackMode.setDisable(true);
-        PasswordAttacks_AttackButton.setText("Stop Attack");
+
         var attack = PasswordAttacks_AttackMode.getSelectionModel().selectedItemProperty().getValue();
-        attack.SetTargetPort(Integer.parseInt(PasswordAttacks_ServerPort.getText()));
-        attack.SetTargetIP(PasswordAttacks_ClientTargetIP.getText());
-        attack.StartAttack();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SyncProgress();
-            }
-        }).start();
+
+        if(PasswordAttackValidityCheck(attack)){
+            PasswordAttacks_AttackButton.setText("Stop Attack");
+            attack.SetTargetPort(Integer.parseInt(PasswordAttacks_ClientTargetPort.getText()));
+            attack.SetTargetIP(PasswordAttacks_ClientTargetIP.getText());
+            attack.StartAttack();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    SyncProgress();
+                }
+            }).start();
+        } else {
+            System.out.println("Validity check failed");
+        }
 
     }
 
@@ -207,6 +249,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
         this.PasswordAttacks_Server = new Server(Integer.parseInt(PasswordAttacks_ServerPort.getText()), PasswordAttacks_ServerPassword.getText());
         this.PasswordAttacks_Server.SubscribeToDebug(this);
         this.PasswordAttacks_Server.StartServer();
+        PasswordAttacks_AttackButton.setDisable(false);
     }
 
     @Override
@@ -224,17 +267,26 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @Override
     public void AttackCompleted(Attacker a, AttackResult r) {
-        System.out.println("Start of attack completed");
-        PasswordAttacks_AttackMode.setDisable(true);
+
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("inside ovveride");
-                PasswordAttacks_AttackButton.setText("Start Attack");
 
-                PasswordAttacks_ClientOutput.setText(
-                        PasswordAttacks_ClientOutput.getText() + ("Time elapsed: "+Long.toString(r.Duration)+"s")
-                );
+                PasswordAttacks_AttackButton.setText("Start Attack");
+                long sec = r.Duration;
+                long minute = sec/60;
+
+                if(sec<60){
+                    PasswordAttacks_ClientOutput.setText(
+                            PasswordAttacks_ClientOutput.getText() + ("Time elapsed: "+Long.toString(sec)+"s\n")
+                    );
+                } else {
+                    PasswordAttacks_ClientOutput.setText(
+                            PasswordAttacks_ClientOutput.getText() + ("Time elapsed: "+Long.toString(minute)+"m\n")
+                    );
+                }
+
                 Traversed.setVisible(false);
 
             }
@@ -245,21 +297,42 @@ public class UIController implements Initializable, DebugListener, AttackResultL
         try {
             Traversed.setProgress(0);
             var attack = PasswordAttacks_AttackMode.getSelectionModel().selectedItemProperty().getValue();
-            System.out.println(attack.IsAttackRunning());
             while (attack.IsAttackRunning()) {
                 Traversed.setProgress(attack.GetProgress());
                 Thread.sleep(100);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Sync Progress Error");
         }
     }
 
-    @Override
-    public void ProgressChange(int current_taskIndex, int total_tasks) {
-        // Yeah, we are not going to use this...
-    }
 
+    private Boolean PasswordAttackValidityCheck(Attacker checkAttack){
+
+        Boolean Validity = false;
+
+        if(!PasswordAttacks_ServerPort.getText().isEmpty() || !PasswordAttacks_ServerPassword.getText().isEmpty() ||
+        !PasswordAttacks_ClientTargetIP.getText().isEmpty() || !PasswordAttacks_ClientTargetPort.getText().isEmpty()){
+
+            if(checkAttack.toString().equals("Bruteforce Attack") && PasswordAttacks_BruteForceUppercase.isSelected() ||
+                    PasswordAttacks_BruteForceSpecialChars.isSelected() || PasswordAttacks_BruteForceLowercase.isSelected()
+                    || PasswordAttacks_BruteForceNumbers.isSelected()){
+
+                Validity = true;
+
+            } else if (checkAttack.toString().equals("Dictionary Attack") && !PasswordAttacks_DictionaryFile.getText().isEmpty()){
+
+                Validity = true;
+
+            } else {
+                ShowMessageAlert("Please fill all fields","Password Attacks","WARNING");
+            }
+        } else {
+            ShowMessageAlert("Please fill all fields","Password Attacks","WARNING");
+        }
+
+        return Validity;
+    }
 
     ///////////////////////////////////
     // Steganography + Stream Cipher //
@@ -300,22 +373,31 @@ public class UIController implements Initializable, DebugListener, AttackResultL
                 );
             }
         } catch (Exception e) {
-            System.out.println("Oh noes");
-            e.printStackTrace();
+            System.out.println("Decode Error");
         }
     }
 
     @FXML
     void TextStega_EncodeClicked(MouseEvent event) {
+
         var max_char_count = Cryptography.Steganography.TextStega.CountPossibleCharacters(TextStega_Original.getText());
-        if (!Cryptography.Steganography.TextStega.CheckIfEncodeable(
-                TextStega_Original.getText(),
-                TextStega_Secret.getText()
-        )){
-            ShowMessageAlert("This message can only encode a secret message of " + max_char_count + " character(s). Please add more spaces.","Stream Cipher + Steganography","WARNING");
-            return;
+        int val = Cryptography.Steganography.TextStega.CountPossibleCharacters(TextStega_Original.getText())-1;
+        if(val>0){
+            if (!Cryptography.Steganography.TextStega.CheckIfEncodeable(
+                    TextStega_Original.getText(),
+                    TextStega_Secret.getText()
+            )){
+                ShowMessageAlert("This message can only encode a secret message of " + max_char_count + " character(s). Please add more spaces.","Stream Cipher + Steganography","WARNING");
+                return;
+            }
+
+        } else {
+            ShowMessageAlert("Woops, you forgot to write the messages","Stream Cipher + Steganography","WARNING");
         }
+
         try {
+
+
             if (TextStegaEnableEncryption.isSelected()) {
                 TextStega_Encoded.setText(
                         Cryptography.Steganography.TextStega.Encode(
@@ -338,7 +420,6 @@ public class UIController implements Initializable, DebugListener, AttackResultL
             chars.setVisible(false);
         } catch (Exception e) {
             System.out.println("Oh noes");
-            e.printStackTrace();
         }
     }
 
@@ -390,6 +471,11 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
         PasswordAttacks_AttackMode.setItems(Modes);
         PasswordAttacks_AttackMode.getSelectionModel().selectFirst();
+
+        PasswordAttacks_DictionaryFile.setVisible(false);
+        PasswordAttacks_OpenDictionaryFileButton.setVisible(false);
+        PasswordAttacks_AttackButton.setDisable(true);
+
         PasswordAttacks_DictionaryAttack.SubscribeToDebug(this);
         PasswordAttacks_BruteForceAttack.SubscribeToDebug(this);
         PasswordAttacks_DictionaryAttack.SubscribeToCompletion(this);

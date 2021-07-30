@@ -73,11 +73,9 @@
 
 .progress-bar > .bar {
     -fx-background-color: linear-gradient(
-        from 0px .75em to .75em 0px,
+        from 0px 1em to 1em 0px,
         repeat,
-        goldenrod 0%,
-        goldenrod 49%,
-        derive(goldenrod, 30%) 50%,
-        derive(goldenrod, 30%) 99%
+        goldenrod 30%, goldenrod 49%,
+        derive(goldenrod, 30%) 50%, derive(goldenrod, 30%) 
     );
 }

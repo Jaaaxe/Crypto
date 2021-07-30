@@ -2,12 +2,10 @@ package Cryptography.PasswordAttacks;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.SocketHandler;
 
 public class DictionaryAttack implements Attacker {
 
@@ -55,52 +53,50 @@ public class DictionaryAttack implements Attacker {
 
     private void AttackInstance(List<String> Chunk) {
         var index = 0;
+        long start = System.currentTimeMillis();
         while (!AttackHalted && !PasswordFound && index < Chunk.size()) {
 
             try {
+                // Start attack
                 var csocket = new Socket(this.TargetIP, this.TargetPort);
                 var input_stream = csocket.getInputStream();
                 var output_stream = csocket.getOutputStream();
                 var input_stream_reader = new BufferedReader(new InputStreamReader(input_stream));
                 var output_stream_writer = new PrintWriter(output_stream, true);
 
-//                System.out.println("[DICTIONARY] Connected...");
-//                ReadStream(input_stream);
                 input_stream_reader.readLine();
                 input_stream_reader.readLine();
 
-//                System.out.println("[DICTIONARY] Trying " + Chunk.get(index));
                 output_stream_writer.println(Chunk.get(index) + '\n');
                 var password_repsonse = input_stream_reader.readLine();
-
-//                System.out.println("[DICTIONARY] >> Response : " + password_repsonse);
                 this.Progress = ((float)(index + 1) / (float)this.Dictionary.size());
                 if (password_repsonse.contains("Access Granted")) {
-                    Debug("Password found : " + Chunk.get(index) + "\n");
+                    Debug("Password found successfully!\nPassword: " + Chunk.get(index) + "\n");
                     System.out.println("Password Found! : " + Chunk.get(index));
+                    // Track time it takes to find password
+                    long time = (System.currentTimeMillis() - start)/1000;
                     this.MatchedPassword = Chunk.get(index);
                     this.PasswordFound = true;
                     this.AttackHalted = true;
                     this.IsAttackRunning = false;
-
+                    // Log results of attack
                     var att_res = new AttackResult();
                     att_res.Attempts = index + 1;
                     att_res.AttackSuccessful = true;
                     att_res.CrackedPassword = Chunk.get(index);
-                    att_res.Duration = -1;
+                    att_res.Duration = time;
 
                     NotifyResult(att_res);
                     return;
                 }
 
-//                System.out.println(String.format("[DICTIONARY] Progress : %f", this.Progress));
                 input_stream.close();
                 output_stream.close();
                 csocket.close();
                 index++;
                 Attempts++;
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Password attack error");
             }
         }
 
@@ -137,6 +133,7 @@ public class DictionaryAttack implements Attacker {
     }
 
     //endregion
+
     // region Dictionary Operations
     public void ClearDictionary() {
         this.Dictionary.clear();
@@ -189,12 +186,6 @@ public class DictionaryAttack implements Attacker {
     public void FinishAttack(AttackResult r) {
         for (var d : AttackResultSubscribers) {
             d.AttackCompleted(this, r);
-        }
-    }
-
-    public void SetProgress(int current, int total) {
-        for (var d : AttackResultSubscribers) {
-            d.ProgressChange(current, total);
         }
     }
 

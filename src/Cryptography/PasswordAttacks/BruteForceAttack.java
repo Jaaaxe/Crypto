@@ -64,24 +64,24 @@ public class BruteForceAttack implements Attacker {
                 input_stream_reader.readLine();
                 input_stream_reader.readLine();
 
-                System.out.println("[BRUTEFORCE] Trying " + Chunk.get(index));
+//                These will help debug and print all attempts but it slows the app down
+//                System.out.println("[BRUTEFORCE] Trying " + Chunk.get(index));
+//                Debug("Trying" + Chunk.get(index)+"\n");
 
                 output_stream_writer.println(Chunk.get(index) + '\n');
                 var password_repsonse = input_stream_reader.readLine();
 
-//                System.out.println("[DICTIONARY] >> Response : " + password_repsonse);
                 this.Progress = ((float)(index + 1) / (float)this.Dictionary.size());
                 if (password_repsonse.contains("Access Granted")) {
                     Debug("Password found successfully!\nPassword: " + Chunk.get(index) + "\n");
-
                     System.out.println("Password Found! : " + Chunk.get(index));
+                    // Tracks time it takes to find password
                     long time = (System.currentTimeMillis() - start)/1000;
-                    System.out.println("Time was: "+time+"s");
                     this.MatchedPassword = Chunk.get(index);
                     this.PasswordFound = true;
                     this.AttackHalted = true;
                     this.IsAttackRunning = false;
-
+                    // Log attack result
                     var att_res = new AttackResult();
                     att_res.Attempts = index + 1;
                     att_res.AttackSuccessful = true;
@@ -92,14 +92,13 @@ public class BruteForceAttack implements Attacker {
                     return;
                 }
 
-//                System.out.println(String.format("[DICTIONARY] Progress : %f", this.Progress));
                 input_stream.close();
                 output_stream.close();
                 csocket.close();
                 index++;
                 Attempts++;
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("TCP client timeout");
             }
         }
 
@@ -178,6 +177,7 @@ public class BruteForceAttack implements Attacker {
     }
 
     //endregion
+
     //region Subscriptions
 
     private ArrayList<AttackResultListener> AttackResultSubscribers = new ArrayList<>();
@@ -212,16 +212,10 @@ public class BruteForceAttack implements Attacker {
         }
     }
 
-    public void SetProgress(int current, int total) {
-        for (var d : AttackResultSubscribers) {
-            d.ProgressChange(current, total);
-        }
-    }
-
     //endregion
 
     @Override
     public String toString() {
-        return "Bruteforce attack";
+        return "Bruteforce Attack";
     }
 }

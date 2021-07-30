@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public class TextStega {
 
-    // We must have definitions of what the ones and zero
-    // bits are
+    // We must have definitions of what the ones and zero bits are
     public static char OneBitFlag = (char)0xa0; // Non-Breaking Space (NBSP)
     public static char ZeroBitFlag = (char)0x20; // Space character
     public static char TerminationFlag = (char)0x03; // End of Transmission Flag
@@ -45,7 +44,6 @@ public class TextStega {
         var ConvertedBytes = new ArrayList<Byte>();
 
         for (var b : ByteArray) {
-            System.out.printf("%02x%n", b);
             if (b == (byte)TerminationFlag) break;
             ConvertedBytes.add(b);
         }
@@ -109,11 +107,12 @@ public class TextStega {
         // convert the character array into a
         // string and return it
         var string = new String(medium_msg_chars);
-        System.out.println(string);
+
         return string;
 
     }
 
+    // Check to ensure there are enough spaces to accommodate characters
     public static int CountPossibleCharacters(String medium_message) {
         var count = 0;
         for (var c : medium_message.toCharArray()) {
@@ -126,7 +125,6 @@ public class TextStega {
     }
 
     public static boolean CheckIfEncodeable(String medium_message, String secret) {
-        System.out.println(secret.length()+"and"+CountPossibleCharacters(medium_message));
         return secret.length() < CountPossibleCharacters(medium_message);
     }
 }

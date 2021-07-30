@@ -145,20 +145,15 @@
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font></TextField>
-                              <CheckBox fx:id="PasswordAttacks_BruteForceUppercase" layoutX="355.0" layoutY="162.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Uppercase" textFill="WHITE" />
-                              <CheckBox fx:id="PasswordAttacks_BruteForceLowercase" layoutX="355.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Lowercase" textFill="WHITE" />
-                              <CheckBox fx:id="PasswordAttacks_BruteForceSpecialChars" layoutX="453.0" layoutY="162.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Special Chars" textFill="WHITE" />
-                              <CheckBox fx:id="PasswordAttacks_BruteForceNumbers" layoutX="453.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Numbers" textFill="WHITE" />
-                              <Label alignment="CENTER" layoutX="374.0" layoutY="216.0" prefHeight="26.0" prefWidth="146.0" text="Dictionary Attack" textFill="#dfab40">
+                              <CheckBox fx:id="PasswordAttacks_BruteForceUppercase" layoutX="350.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Uppercase" textFill="WHITE" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceLowercase" layoutX="350.0" layoutY="196.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Lowercase" textFill="WHITE" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceSpecialChars" layoutX="448.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Special Chars" textFill="WHITE" />
+                              <CheckBox fx:id="PasswordAttacks_BruteForceNumbers" layoutX="448.0" layoutY="196.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_BruteForceConfigChangeIncl" text="Numbers" textFill="WHITE" />
+                              <TextField fx:id="PasswordAttacks_DictionaryFile" layoutX="325.0" layoutY="73.0" prefHeight="40.0" prefWidth="200.0" promptText="Path to dictionary file" style="-fx-background-radius: 0; -fx-background-insets: 0;">
                                  <font>
-                                    <Font name="Avenir Book" size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="PasswordAttacks_DictionaryFile" layoutX="325.0" layoutY="249.0" prefHeight="40.0" prefWidth="200.0" promptText="Path to dictionary file" style="-fx-background-radius: 0; -fx-background-insets: 0;">
-                                 <font>
-                                    <Font name="Avenir Book" size="14.0" />
+                                    <Font name="Avenir Book" size="13.0" />
                                  </font></TextField>
-                              <Button fx:id="PasswordAttacks_OpenDictionaryFileButton" layoutX="537.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_DictionaryFileOpenClicked" prefHeight="39.0" prefWidth="43.0" text="..." />
+                              <Button fx:id="PasswordAttacks_OpenDictionaryFileButton" layoutX="529.0" layoutY="73.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_DictionaryFileOpenClicked" prefHeight="39.0" prefWidth="43.0" text="..." />
                               <Button fx:id="PasswordAttacks_AttackButton" layoutX="649.0" layoutY="219.0" mnemonicParsing="false" onMouseClicked="#PasswordAttacks_StartAttack" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Start Attack" textFill="#333946">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
@@ -167,28 +162,23 @@
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font></Button>
-                              <ComboBox fx:id="PasswordAttacks_AttackMode" layoutX="649.0" layoutY="172.0" onKeyPressed="#PasswordAttacks_AttackModeChanged" prefHeight="36.0" prefWidth="200.0" />
+                              <ComboBox fx:id="PasswordAttacks_AttackMode" layoutX="649.0" layoutY="172.0" onAction="#PasswordAttacks_AttackModeChanged" prefHeight="36.0" prefWidth="200.0" promptText="Attack Mode" />
                               <TextField fx:id="PasswordAttacks_ServerPort" layoutX="47.0" layoutY="73.0" prefHeight="40.0" prefWidth="200.0" promptText="Server port number" style="-fx-background-radius: 0; -fx-background-insets: 0;">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font></TextField>
-                              <TextField fx:id="PasswordAttacks_ClientTargePort" layoutX="649.0" layoutY="123.0" prefHeight="40.0" prefWidth="200.0" promptText="Target port" style="-fx-background-radius: 0; -fx-background-insets: 0;">
+                              <TextField fx:id="PasswordAttacks_ClientTargetPort" layoutX="649.0" layoutY="123.0" prefHeight="40.0" prefWidth="200.0" promptText="Target port" style="-fx-background-radius: 0; -fx-background-insets: 0;">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font></TextField>
-                              <Slider fx:id="PasswordAttacks_BruteForcePasswordLength" blockIncrement="1.0" layoutX="347.0" layoutY="115.0" majorTickUnit="1.0" max="6.0" min="1.0" minorTickCount="0" onInputMethodTextChanged="#PasswordAttacks_BruteForceConfigChange" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-text-fill: #dfab40;" />
-                              <ProgressBar fx:id="Traversed" layoutX="645.0" layoutY="268.0" prefHeight="30.0" prefWidth="207.0" progress="0.0" />
-                              <Label alignment="CENTER" layoutX="374.0" layoutY="67.0" prefHeight="26.0" prefWidth="142.0" text="Brute Force Attack" textFill="#dfab40">
-                                 <font>
-                                    <Font name="Avenir Book" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" layoutX="248.0" layoutY="34.0" prefHeight="27.0" prefWidth="401.0" text="Attack Setup" textFill="WHITE">
+                              <Slider fx:id="PasswordAttacks_BruteForcePasswordLength" blockIncrement="1.0" layoutX="347.0" layoutY="108.0" majorTickUnit="1.0" max="6.0" min="1.0" minorTickCount="0" onInputMethodTextChanged="#PasswordAttacks_BruteForceConfigChange" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-text-fill: #dfab40;" />
+                              <ProgressBar fx:id="Traversed" layoutX="645.0" layoutY="268.0" prefHeight="30.0" prefWidth="207.0" progress="0.04" />
+                              <Label fx:id="AttackTitle" alignment="CENTER" layoutX="248.0" layoutY="34.0" prefHeight="27.0" prefWidth="401.0" text="Bruteforce Setup" textFill="WHITE">
                                  <font>
                                     <Font name="Avenir Book" size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER" layoutX="374.0" layoutY="92.0" prefHeight="26.0" prefWidth="142.0" text="Password Length" textFill="#dfab40">
+                              <Label fx:id="PasswordLength" alignment="CENTER" layoutX="376.0" layoutY="73.0" prefHeight="26.0" prefWidth="142.0" text="Password Length" textFill="#dfab40">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font>
@@ -206,18 +196,18 @@
                                     <Font name="Avenir Book" size="18.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="TextStega_Original" layoutX="53.0" layoutY="142.0" onKeyPressed="#CharCount" prefHeight="134.0" prefWidth="250.0" style="-fx-background-radius: 0;" />
+                              <TextArea fx:id="TextStega_Original" layoutX="53.0" layoutY="142.0" onKeyPressed="#CharCount" prefHeight="135.0" prefWidth="250.0" style="-fx-background-radius: 0;" />
                               <Label alignment="CENTER" layoutX="345.0" layoutY="105.0" prefHeight="26.0" prefWidth="249.0" text="Secret Message" textFill="#fefefe">
                                  <font>
                                     <Font name="Avenir Book" size="18.0" />
                                  </font>
                               </Label>
                               <TextArea fx:id="TextStega_Secret" layoutX="345.0" layoutY="142.0" prefHeight="135.0" prefWidth="249.0" style="-fx-background-radius: 0;" />
-                              <TextField fx:id="SteganographyCiperPassword" alignment="CENTER" layoutX="661.0" layoutY="282.0" prefHeight="37.0" prefWidth="213.0" promptText="Enter password" style="-fx-background-color: #e1bd75; -fx-background-radius: 0; -fx-border-color: #dfab40; -fx-border-width: 2; -fx-text-fill: #1d222c; -fx-prompt-text-fill: #333946;">
+                              <TextField fx:id="SteganographyCiperPassword" alignment="CENTER" layoutX="660.0" layoutY="282.0" prefHeight="37.0" prefWidth="214.0" promptText="Enter password" style="-fx-background-color: #e1bd75; -fx-background-radius: 0; -fx-border-color: #dfab40; -fx-border-width: 2; -fx-text-fill: #1d222c; -fx-prompt-text-fill: #333946;">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font></TextField>
-                              <CheckBox fx:id="TextStegaEnableEncryption" layoutX="662.0" layoutY="246.0" mnemonicParsing="false" selected="true" text="Enable Stream Cipher" textFill="#fefefe">
+                              <CheckBox fx:id="TextStegaEnableEncryption" layoutX="660.0" layoutY="246.0" mnemonicParsing="false" selected="true" text="Enable Stream Cipher" textFill="#fefefe">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font></CheckBox>
@@ -232,12 +222,12 @@
                                     <Font name="Avenir Book" size="14.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="661.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#TextStega_DecodeClicked" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Decode Message" textFill="#333946">
+                              <Button layoutX="660.0" layoutY="193.0" mnemonicParsing="false" onMouseClicked="#TextStega_DecodeClicked" prefHeight="36.0" prefWidth="214.0" style="-fx-background-color: #dfab40; -fx-background-radius: 0;" text="Decode Message" textFill="#333946">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="656.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#TextStega_Refresh" prefHeight="36.0" prefWidth="213.0" style="-fx-background-color: #333946; -fx-background-radius: 0; -fx-text-fill: #dfab40; -fx-border-color: #dfab40; -fx-border-width: 2;" text="Refresh" textFill="#333946">
+                              <Button layoutX="660.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#TextStega_Refresh" prefHeight="36.0" prefWidth="214.0" style="-fx-background-color: #333946; -fx-background-radius: 0; -fx-text-fill: #dfab40; -fx-border-color: #dfab40; -fx-border-width: 2;" text="Refresh" textFill="#333946">
                                  <font>
                                     <Font name="Avenir Book" size="14.0" />
                                  </font>
