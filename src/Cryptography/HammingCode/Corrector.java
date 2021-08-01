@@ -1,6 +1,5 @@
 package Cryptography.HammingCode;
 
-import org.apache.commons.lang3.ClassPathUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

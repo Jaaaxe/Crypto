@@ -1,7 +1,5 @@
 import Cryptography.PasswordAttacks.*;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +10,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -132,6 +131,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
         Attacker type = PasswordAttacks_AttackMode.getValue();
 
+        // Hide and Show settings based on attack mode
         if(type.toString().equals("Bruteforce Attack")){
             AttackTitle.setText("Bruteforce Setup");
             PasswordLength.setVisible(true);
@@ -225,21 +225,26 @@ public class UIController implements Initializable, DebugListener, AttackResultL
     @FXML
     void PasswordAttacks_StartServer(MouseEvent event) {
 
-        if (this.PasswordAttacks_Server == null) {
-            this.StartServer();
-        } else {
-            if  (this.PasswordAttacks_Server.ServerRunning) {
-                this.PasswordAttacks_Server.StopServer();
-                this.PasswordAttacks_Server = null;
+        if(!PasswordAttacks_ServerPort.getText().isEmpty() && !PasswordAttacks_ServerPassword.getText().isEmpty()){
+            if (this.PasswordAttacks_Server == null) {
+                this.StartServer();
             } else {
-                this.PasswordAttacks_Server.StartServer();
+                if  (this.PasswordAttacks_Server.ServerRunning) {
+                    this.PasswordAttacks_Server.StopServer();
+                    this.PasswordAttacks_Server = null;
+                } else {
+                    this.PasswordAttacks_Server.StartServer();
+                }
             }
-        }
-        if (this.PasswordAttacks_Server != null) {
-            PasswordAttacks_ServerButton.setText(this.PasswordAttacks_Server.ServerRunning ? "Stop Server" : "Start Server");
+            if (this.PasswordAttacks_Server != null) {
+                PasswordAttacks_ServerButton.setText(this.PasswordAttacks_Server.ServerRunning ? "Stop Server" : "Start Server");
+            } else {
+                PasswordAttacks_ServerButton.setText("Start Server");
+            }
         } else {
-            PasswordAttacks_ServerButton.setText("Start Server");
+            ShowMessageAlert("Please fill the server settings","Password Attack","WARNING");
         }
+
 
     }
 
@@ -267,7 +272,6 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
     @Override
     public void AttackCompleted(Attacker a, AttackResult r) {
-
 
         Platform.runLater(new Runnable() {
             @Override
@@ -311,8 +315,7 @@ public class UIController implements Initializable, DebugListener, AttackResultL
 
         Boolean Validity = false;
 
-        if(!PasswordAttacks_ServerPort.getText().isEmpty() || !PasswordAttacks_ServerPassword.getText().isEmpty() ||
-        !PasswordAttacks_ClientTargetIP.getText().isEmpty() || !PasswordAttacks_ClientTargetPort.getText().isEmpty()){
+        if(!PasswordAttacks_ClientTargetIP.getText().isEmpty() && !PasswordAttacks_ClientTargetPort.getText().isEmpty()){
 
             if(checkAttack.toString().equals("Bruteforce Attack") && PasswordAttacks_BruteForceUppercase.isSelected() ||
                     PasswordAttacks_BruteForceSpecialChars.isSelected() || PasswordAttacks_BruteForceLowercase.isSelected()
@@ -468,30 +471,25 @@ public class UIController implements Initializable, DebugListener, AttackResultL
                         PasswordAttacks_DictionaryAttack
                 );
 
-
+        // Password Attack Initialisation
         PasswordAttacks_AttackMode.setItems(Modes);
         PasswordAttacks_AttackMode.getSelectionModel().selectFirst();
-
         PasswordAttacks_DictionaryFile.setVisible(false);
         PasswordAttacks_OpenDictionaryFileButton.setVisible(false);
         PasswordAttacks_AttackButton.setDisable(true);
-
         PasswordAttacks_DictionaryAttack.SubscribeToDebug(this);
         PasswordAttacks_BruteForceAttack.SubscribeToDebug(this);
         PasswordAttacks_DictionaryAttack.SubscribeToCompletion(this);
         PasswordAttacks_BruteForceAttack.SubscribeToCompletion(this);
+        Traversed.setVisible(false);
+
+        // Text Steganography Initialisation
         TextStega_Original.setWrapText(true);
         TextStega_Encoded.setWrapText(true);
         TextStega_Secret.setWrapText(true);
         SteganographyCiperPassword.visibleProperty().bind(TextStegaEnableEncryption.selectedProperty());
-        Traversed.setVisible(false);
 
         System.out.println("App Loaded");
-
-
-
-
-
 
     }
 }

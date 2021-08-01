@@ -104,8 +104,7 @@ public class TextStega {
             index++;
         }
 
-        // convert the character array into a
-        // string and return it
+        // convert the character array into a string and return it
         var string = new String(medium_msg_chars);
 
         return string;
@@ -124,6 +123,7 @@ public class TextStega {
         return (int)(count / 8);
     }
 
+    // Verification to make sure the secret + flag can be added to message
     public static boolean CheckIfEncodeable(String medium_message, String secret) {
         return secret.length() < CountPossibleCharacters(medium_message);
     }

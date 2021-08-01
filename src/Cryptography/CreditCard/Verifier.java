@@ -2,12 +2,9 @@ package Cryptography.CreditCard;
 
 import DotNetExtensions.Array;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 public class Verifier {
     public static boolean VerifyCreditCard(String original) {

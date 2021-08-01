@@ -9,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class DictionaryAttack implements Attacker {
 
+    // Function names are self explanatory
+
     private ArrayList<String> Dictionary;
     public boolean IsAttackRunning = false;
     public float Progress = 0.0f;
@@ -99,12 +101,12 @@ public class DictionaryAttack implements Attacker {
                 System.out.println("Password attack error");
             }
         }
-
+        long time = (System.currentTimeMillis() - start)/1000;
         var att_res = new AttackResult();
         att_res.Attempts = index + 1;
         att_res.AttackSuccessful = false;
         att_res.CrackedPassword = "";
-        att_res.Duration = -1;
+        att_res.Duration = time;
 
         NotifyResult(att_res);
         Debug("Dictionary Exhausted\n");

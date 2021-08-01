@@ -16,8 +16,7 @@ public class Server {
 
     public boolean ServerRunning;
 
-    // Function names are self explanatory on what each function does
-    // in terms of the server
+    // Function names are self explanatory
 
     public Server(int port, String Password) {
         try {
@@ -75,6 +74,7 @@ public class Server {
             WriteStream(output_stream,"Hello! Welcome to the secret server\nPlease provide password to access secret files\nPassword : ");
             var response = input_stream_reader.readLine();
 
+            // The attacks check for granted access
             if (!response.equals(this.Password)) {
                 output_stream_writer.println("Access Denied");
             } else {
